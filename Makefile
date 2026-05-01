@@ -1,7 +1,7 @@
 COMPILER ?= gcc
 BUILD_DIR := build
 TOOLCHAIN_FILE := $(BUILD_DIR)/conan_toolchain.cmake
-UNITTEST_FILE := $(BUILD_DIR)/unit_tests
+UNITTEST_FILE := $(BUILD_DIR)/unit_tests/unit_tests
 BUILD_MAKEFILE := $(BUILD_DIR)/Makefile
 PROFILE_PATH := ./.profiles/$(COMPILER)
 COMPILER_MARKER := $(BUILD_DIR)/.compiler.stamp

@@ -9,18 +9,7 @@
 namespace {
 
 using namespace conference;
-using common_interests = std::array<size_t, size_t(scientific_interest::End)>;
-
-common_interests get_common_interests(const std::vector<person>& guests) {
-    common_interests result = {};
-    for(const auto& guest : guests)
-        ++result[size_t(guest.interest)];
-    return result;
-}
-
-bool have_common_interests(const common_interests& interests) {
-    return std::any_of(interests.begin(), interests.end(), [](size_t number) { return number > 1zu; });
-}
+using namespace details;
 
 std::pair<size_t, size_t> get_random_pair(const std::vector<person>& guests) {
     if (guests.size() < 2)
@@ -33,6 +22,21 @@ std::pair<size_t, size_t> get_random_pair(const std::vector<person>& guests) {
     while (second == first)
         second = guests_distribution(gen);
     return {first, second};
+}
+
+}
+
+namespace conference::details {
+
+common_interests get_common_interests(const std::vector<person>& guests) {
+    common_interests result = {};
+    for(const auto& guest : guests)
+        ++result[size_t(guest.interest)];
+    return result;
+}
+
+bool have_common_interests(const common_interests& interests) {
+    return std::any_of(interests.begin(), interests.end(), [](size_t number) { return number > 1zu; });
 }
 
 void leave_room(std::vector<person>& guests_in_room, size_t first, size_t second) {
@@ -104,6 +108,14 @@ bool in_room(const guests_in_room_b& guests, size_t id) {
         const auto& [first, second] = couple;
         return first.id == id || second.id == id;
     });
+}
+
+std::optional<Room> in_room(const guests_in_room_a& alone_guests, const guests_in_room_b& coupled_guests, size_t id) {
+    if (id > alone_guests.size() + 2 * coupled_guests.size())
+        return std::nullopt;
+    if (alone_guests.size() > 2 * coupled_guests.size()) // small optimization for choosing shorten vertor
+        return in_room(coupled_guests, id) ? Room::B : Room::A;
+    return in_room(alone_guests, id) ? Room::A : Room::B;
 }
 
 void show_guests_info(const guests_in_room_a& guests) {
