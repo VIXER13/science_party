@@ -6,4 +6,5 @@ add_library(party_lib
     STATIC
         guests.cpp
         party.cpp
+        utils.cpp
 )

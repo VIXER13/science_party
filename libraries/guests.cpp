@@ -1,5 +1,6 @@
 #include "guests.hpp"
 
+#include <algorithm>
 #include <array>
 #include <ostream>
 #include <random>
@@ -53,7 +54,7 @@ std::vector<person> invite_guests(size_t number) {
     std::random_device rd;
     std::mt19937 gen{rd()};
     std::uniform_int_distribution<size_t> name_distribution{0zu, Name_Pool.size() - 1zu};
-    std::uniform_int_distribution<> interests_distribution{int(scientific_interest::Begin), int(scientific_interest::End)};
+    std::uniform_int_distribution<> interests_distribution{int(scientific_interest::Begin), int(scientific_interest::End) - 1};
     std::vector<person> guests;
     guests.reserve(number);
     for(const size_t i : std::ranges::iota_view{0zu, number})

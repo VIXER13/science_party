@@ -12,7 +12,7 @@ enum class scientific_interest : uint8_t {
     Statistics,
     Clinical_Investigations,
     Healt_Policy,
-    End = Healt_Policy
+    End
 };
 
 std::ostream& operator<<(std::ostream& os, scientific_interest interest);
